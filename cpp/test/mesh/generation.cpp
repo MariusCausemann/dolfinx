@@ -32,7 +32,15 @@ void CHECK_adjacency_list_equal(
   REQUIRE(static_cast<std::size_t>(adj_list.num_nodes())
           == expected_list.size());
 
-  // for (T i = 0; i < adj_list.num_nodes(); i++)
+  // NOTE: re-enabling this per-row check (see git history) fails on the
+  // tetrahedron cell-to-vertex case: the actual row order differs from
+  // the hand-written expected tables by a permutation, even though
+  // Topology construction re-numbers/re-orders cell vertices during
+  // distribution and no ordering contract is documented for
+  // connectivity(tdim, 0). Left disabled pending a dedicated
+  // investigation into whether that's a real build_tet bug or the
+  // tables simply predate a later, legitimate reordering.
+  // for (std::int32_t i = 0; i < adj_list.num_nodes(); i++)
   // {
   //   CHECK_THAT(adj_list.links(i),
   //              Catch::Matchers::RangeEquals(expected_list[i]));
